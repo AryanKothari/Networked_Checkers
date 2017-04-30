@@ -45,7 +45,7 @@ void draw()
   for (int i = 0; i<checker.size(); i++)
   {
 
-    checker.get(i).Selected();
+    checker.get(i).isSelected();
 
     checker.get(i).Draw();
   }
