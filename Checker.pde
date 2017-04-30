@@ -39,14 +39,9 @@ class Checker
 
   public void isSelected()
   {
-    if (checkerCollision())
-    {
-      _isSelected = true;
+      if (checkerCollision())
+      {
+        _color = color(0, 0, 155);
+      }
     }
-
-    if (_isSelected)
-    {
-      _color = color(0, 0, 155);
-    }
-  }
 }

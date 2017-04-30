@@ -9,12 +9,6 @@ ArrayList<Checker> checker = new ArrayList<Checker>();
 void setup() {
   size (400, 400);
   smooth();
-}
-
-void draw() 
-{
-  background(0);
-
   noStroke();
 
   for (int x = 0; x < width; x += size) 
@@ -41,13 +35,15 @@ void draw()
       }
     }
   }
+}
 
-  for (int i = 0; i<checker.size(); i++)
+void draw() 
+{
+    for (int i = 0; i<checker.size(); i++)
   {
 
-    checker.get(i).isSelected();
-
     checker.get(i).Draw();
+    checker.get(i).isSelected();
   }
 }
 
