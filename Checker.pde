@@ -13,7 +13,7 @@ class Checker
     _pos = pos;
     _color = Color;
     _ID = ID;
-    _stroke = 255;
+    _stroke = Color;
     _isSelected = false;
     _Team = Team;
     _mouseClicked = false;
@@ -23,6 +23,7 @@ class Checker
   {
     fill(_color);
     stroke(_stroke);
+    strokeWeight(2);
     ellipse(_pos.x, _pos.y, 40, 40);
   }
 
@@ -52,14 +53,22 @@ class Checker
 
     if (!_isSelected)
     {
-      if (_Team == "RED")
+      if (_Team == "BLUE")
       {
-        _color = color(255, 0, 0);
+        _color = color(0,0,155);
       } 
       if (_Team == "BLACK")
       { 
         _color = color(0, 0, 0);
       }
+    }
+    
+    if(_Team == TeamTurn)
+    {
+      _stroke = color(0,255,0);
+    } else
+    {
+      _stroke = color(_color);
     }
   }
 
@@ -78,12 +87,12 @@ class Checker
             _pos.y = (int)(mouseY/50) * 50 + 25;
             _isSelected = false;
 
-            if (TeamTurn == "RED")
+            if (TeamTurn == "BLUE")
             {
               TeamTurn = "BLACK";
             } else
             {
-              TeamTurn = "RED";
+              TeamTurn = "BLUE";
             }
           }
         }

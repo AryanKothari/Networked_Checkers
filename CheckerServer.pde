@@ -7,7 +7,7 @@ boolean hit;
 int currSelected;
 int ID;
 
-String TeamTurn = "RED";
+String TeamTurn = "BLUE";
 
 
 ArrayList<Checker> checker = new ArrayList<Checker>();
@@ -25,7 +25,7 @@ void setup()
       if ((x+y) % 20 ==0) 
         if (y < 150)
         {
-          checker.add(new Checker(new PVector(x + size/2, y + size/2), color(255, 0, 0), ID, "RED"));
+          checker.add(new Checker(new PVector(x + size/2, y + size/2), color(0, 0, 155), ID, "BLUE"));
           ID += 1;
         } else if (y >= 250)
         {
