@@ -74,6 +74,11 @@ void draw()
     checker.get(i).select();
     checker.get(i).Move();
 
+    if (data[0] == 1)
+    {
+      checker.get(i)._isSelected = false;
+    }
+
     c = s.available();
     if (c != null) {
       input = c.readString();
@@ -94,8 +99,11 @@ void mouseClicked()
     if (checker.get(i).checkerCollision())
     {
       currSelected = checker.get(i)._ID;
-      checker.get(currSelected)._isSelected = true;
-      //yolo = true;
+
+      if (checker.get(currSelected)._team == 0 && checker.get(currSelected)._team == data[0])
+      {
+        checker.get(currSelected)._isSelected = true;
+      }
     }
   }
 }
