@@ -81,25 +81,35 @@ class Checker_Blue
 
   public void Move()
   {
-    if (_isSelected)
+    for (int i = 0; i < block.size(); i++)
     {
-      if (mousePressed)
+      if (_team == 0 && _team == data[0])
       {
-        if (dist(mouseX, mouseY, _pos.x, _pos.y) < 80
-          && dist(mouseX, mouseY, _pos.x, _pos.y) > 30) 
+        if (_isSelected)
         {
-
-          if (((int)(mouseX/50) * 50 + 25 + (int)(mouseY/50) * 50 + 25) % 20 > 0) 
+          if (mousePressed)
           {
-            //if(it is not colliding with another piece)
-            _pos.x = (int)(mouseX/50) * 50 + 25;
-            _pos.y = (int)(mouseY/50) * 50 + 25;
+            if (block.get(i).spaceCollision())
+            {
+              currSelectedBlock = block.get(i)._ID;
+              if (dist(mouseX, mouseY, _pos.x, _pos.y) < 80
+                && dist(mouseX, mouseY, _pos.x, _pos.y) > 30) 
+              {
+                if (block.get(currSelectedBlock)._Color == "RED") 
+                {
+                  //if(it is not colliding with another piece)
+                  _pos.x = block.get(currSelectedBlock)._posX + 25;
+                  _pos.y = block.get(currSelectedBlock)._posY + 25;
 
-            _isSelected = false;
+                  _isSelected = false;
 
-            data[0] = 1;
+                  println(block.get(currSelectedBlock)._ID, _ID);
 
-            s.write(data[0] + "\n");
+                  data[0] = 1;
+                  s.write(data[0] + " " + block.get(currSelectedBlock)._ID + " " + _ID + "\n");
+                }
+              }
+            }
           }
         }
       }

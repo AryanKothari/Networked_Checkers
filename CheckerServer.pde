@@ -5,11 +5,11 @@ int selectedPieces = 0;
 boolean hit;
 
 int currSelected;
+int currSelectedBlock;
 int ID;
 int BlockID;
 
 boolean Update = false;
-boolean yolo = false;
 
 import processing.net.*;
 
@@ -38,8 +38,6 @@ void setup()
     { 
       if ((x+y) % 20 ==0) 
       {
-        block.add(new Square(x, y, color(255, 0, 0), size, ID, "RED"));
-        BlockID += 1;
         if (y < 150)
         {
           checker.add(new Checker_Blue(new PVector(x + size/2, y + size/2), color(0, 0, 155), ID, 0));
@@ -49,9 +47,21 @@ void setup()
           checker.add(new Checker_Blue(new PVector(x + size/2, y + size/2), color(0, 0, 0), ID, 1));
           ID += 1;
         }
+      }
+    }
+  }
+
+  for (int x = 0; x < width; x += size) 
+  {
+    for (int y = 0; y < height; y += size) 
+    { 
+      if ((x+y) % 20 ==0) 
+      {
+        block.add(new Square(x, y, color(255, 0, 0), size, BlockID, "RED"));
+        BlockID += 1;
       } else
       {
-        block.add(new Square(x, y, color(0, 0, 0), size, ID, "BLACK"));
+        block.add(new Square(x, y, color(0, 0, 0), size, BlockID, "BLACK"));
         BlockID += 1;
       }
     }
@@ -78,14 +88,22 @@ void draw()
     {
       checker.get(i)._isSelected = false;
     }
+  }
 
-    c = s.available();
-    if (c != null) {
-      input = c.readString();
-      input = input.substring(0, input.indexOf("\n")); // Only up to the newline
-      data = int(split(input, ' ')); // Split values into an array
-      // Draw line using received coord
-      //println(data[2], data[3]);
+  for (int i = 0; i < block.size(); i++)
+  {
+    for (int j = 0; j < checker.size(); j++)
+    {
+
+      c = s.available();
+      if (c != null) {
+        input = c.readString();
+        input = input.substring(0, input.indexOf("\n")); // Only up to the newline
+        data = int(split(input, ' ')); // Split values into an array
+        checker.get(data[2])._pos.x = block.get(data[1])._posX + 25;
+        checker.get(data[2])._pos.y = block.get(data[1])._posY + 25;
+        println(data[1], data[2]);
+      }
     }
   }
 }
