@@ -97,16 +97,19 @@ class Checker_Blue
               {
                 if (block.get(currSelectedBlock)._Color == "RED") 
                 {
-                  //if(it is not colliding with another piece)
-                  _pos.x = block.get(currSelectedBlock)._posX + 25;
-                  _pos.y = block.get(currSelectedBlock)._posY + 25;
+                  if (block.get(currSelectedBlock).isOccupied == false)
+                  {
+                    _pos.x = block.get(currSelectedBlock)._posX + 25;
+                    _pos.y = block.get(currSelectedBlock)._posY + 25;
+                    
+                    movesound.play();
+                    movesound.rewind();
 
-                  _isSelected = false;
+                    _isSelected = false;
 
-                  println(block.get(currSelectedBlock)._ID, _ID);
-
-                  data[0] = 1;
-                  s.write(data[0] + " " + block.get(currSelectedBlock)._ID + " " + _ID + "\n");
+                    data[0] = 1;
+                    s.write(data[0] + " " + block.get(currSelectedBlock)._ID + " " + _ID + "\n");
+                  }
                 }
               }
             }

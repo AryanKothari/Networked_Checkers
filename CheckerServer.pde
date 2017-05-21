@@ -11,7 +11,18 @@ int BlockID;
 
 boolean Update = false;
 
+PVector hi;
+
 import processing.net.*;
+
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.effects.*;
+import ddf.minim.signals.*;
+import ddf.minim.spi.*;
+import ddf.minim.ugens.*;
+Minim minim;
+AudioPlayer movesound;
 
 Server s;
 Client c;
@@ -29,6 +40,9 @@ void setup()
   smooth();
 
   data[0] = 0;
+
+  minim = new Minim(this); //Music 
+  movesound = minim.loadFile("movesound.mp3");
 
   s = new Server(this, 12345); 
 
@@ -73,9 +87,15 @@ void draw()
   background(0);
   noStroke();
 
+  hi = new PVector(mouseX, mouseY);
+
   for (int i = 0; i < block.size(); i++)
   {
     block.get(i).Draw();
+
+    if (block.get(i).isOccupied == true)
+    {
+    }
   }
 
   for (int i = 0; i<checker.size(); i++)
@@ -94,6 +114,13 @@ void draw()
   {
     for (int j = 0; j < checker.size(); j++)
     {
+      if (block.get(i).RectCircleColliding(checker.get(j)._pos, 20))
+      {
+        println(block.get(i)._ID);
+      } else
+      {
+      }
+
 
       c = s.available();
       if (c != null) {
@@ -102,7 +129,6 @@ void draw()
         data = int(split(input, ' ')); // Split values into an array
         checker.get(data[2])._pos.x = block.get(data[1])._posX + 25;
         checker.get(data[2])._pos.y = block.get(data[1])._posY + 25;
-        println(data[1], data[2]);
       }
     }
   }
