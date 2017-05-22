@@ -1,8 +1,8 @@
 int size = 50;
 boolean checkerpiece = false;
-boolean mouseClicked = false;
 int selectedPieces = 0;
 boolean hit;
+boolean update = false;
 
 int currSelected;
 int currSelectedBlock;
@@ -10,7 +10,8 @@ int ID;
 int BlockID;
 int run = 0;
 
-boolean initiateMultiplayer = true;
+int BlackCheckers;
+int BlueCheckers;
 
 
 int screen = 0;
@@ -91,6 +92,21 @@ void setup()
     }
   }
 
+  for (int i = 0; i<checker.size(); i++)
+  {
+    if (checker.get(i)._team == 0)
+    {
+      BlueCheckers += 1;
+    }
+
+    if (checker.get(i)._team == 1)
+    {
+      BlackCheckers += 1;
+    }
+  }
+
+  BlackCheckers -= 4;
+
   InfoBar = new InfoBar();
 }
 
@@ -99,12 +115,11 @@ void draw()
   background(255, 0, 0);
 
   noStroke();
-  InfoBar.Draw();
 
-  if (screen == 0)
+  if (screen == 0 || screen == 4)
   {
     music.play();
-    fill (0, 0, 0);
+    fill (0, 0, 200);
     textSize(20);
     text("The Game Of...", 50, 60);
     text("Created by Aryan Kothari", 145, 405);
@@ -116,7 +131,7 @@ void draw()
     rect(110, 200, 180, 40);
     rect(110, 260, 180, 40);
 
-    fill(255, 0, 0);
+    fill(0, 0, 255);
     textSize(30);
     text("Multiplayer", 125, 165);
     text("One Device", 125, 225);
@@ -127,11 +142,8 @@ void draw()
     {
       movesound.play();
       movesound.rewind();
-
+      update = true;
       screen = 1;
-      run = 1;
-      s.write(0 + " " + 0 + " " + 0 + " " + screen + "\n");
-
       mode = "multiplayer";
     }
 
@@ -140,43 +152,64 @@ void draw()
     {
       movesound.play();
       movesound.rewind();
-      screen = 1;
-      s.write(0 + " " + 0 + " " + 0 + " " + 0 + " " + 1 + "\n");
+
+      screen = 2;
+      update = true;
       mode = "one device";
     }
   }
 
-  if (screen == 1)
+  if (screen == 1 || screen == 2)
   {
 
     for (int i = 0; i < block.size(); i++)
     {
       block.get(i).Draw();
-      InfoBar.Draw();
     }
 
 
     for (int i = 0; i<checker.size(); i++)
     {
       checker.get(i).Draw();
-      checker.get(i).select();
+
+      if (mode == "multiplayer")
+      {
+        if (checker.get(currSelected)._team == 0)
+        {
+          checker.get(i).select();
+        }
+      }
+
+      if (mode == "one device")
+      {
+        checker.get(i).select();
+      }
+
       checker.get(i).Move();
-      InfoBar.Draw();
     }
 
-    for (int i = 0; i < block.size(); i++)
-    {
-      for (int j = 0; j < checker.size(); j++)
-      {
+    InfoBar.Draw();
+  }
 
-        c = s.available();
-        if (c != null) {
-          input = c.readString();
-          input = input.substring(0, input.indexOf("\n")); // Only up to the newline
-          data = int(split(input, ' ')); // Split values into an array
-          checker.get(data[2])._pos.x = block.get(data[1])._posX + 25;
-          checker.get(data[2])._pos.y = block.get(data[1])._posY + 25;
-        }
+  for (int i = 0; i < block.size(); i++)
+  {
+    for (int j = 0; j < checker.size(); j++)
+    {
+
+      if (update)
+      {
+        s.write(0 + " " + 0 + " " +  
+          0 + " " + screen + "\n");
+        update = false;
+      }
+
+      c = s.available();
+      if (c != null) {
+        input = c.readString();
+        input = input.substring(0, input.indexOf("\n")); // Only up to the newline
+        data = int(split(input, ' ')); // Split values into an array
+        checker.get(data[2])._pos.x = block.get(data[1])._posX + 25;
+        checker.get(data[2])._pos.y = block.get(data[1])._posY + 25;
       }
     }
   }
@@ -207,6 +240,19 @@ void mouseClicked()
           checker.get(currSelected)._isSelected = true;
         }
       }
+    }
+  }
+}
+
+void keyPressed()
+{
+  if (key == ESC)
+  {
+    if (screen == 1)
+    {
+      update = true;
+      screen = 4;
+      s.write(data[0] + " " + 0 + " " +  0 + " " + screen + "\n");
     }
   }
 }
