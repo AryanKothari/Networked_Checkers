@@ -50,32 +50,66 @@ class Checker_Blue
 
   public void select()
   {
-    if (_isSelected)
+    if (mode == "multiplayer")
     {
+      if (_isSelected)
+      {
+        if (_team == 0 && _team == data[0])
+        {
+          _color = color(200, 200, 0);
+        }
+      }
+
+      if (!_isSelected)
+      {
+        if (_team == 0)
+        {
+          _color = color(0, 0, 155);
+        } 
+        if (_team == 1)
+        { 
+          _color = color(0, 0, 0);
+        }
+      }
+
       if (_team == 0 && _team == data[0])
       {
-        _color = color(200, 200, 0);
-      }
-    }
-
-    if (!_isSelected)
-    {
-      if (_team == 0)
+        _stroke = color(0, 255, 0);
+      } else
       {
-        _color = color(0, 0, 155);
-      } 
-      if (_team == 1)
-      { 
-        _color = color(0, 0, 0);
+        _stroke = color(_color);
       }
     }
 
-    if (_team == 0 && _team == data[0])
+    if (mode == "one device")
     {
-      _stroke = color(0, 255, 0);
-    } else
-    {
-      _stroke = color(_color);
+      if (_isSelected)
+      {
+        if (_team == data[0])
+        {
+          _color = color(200, 200, 0);
+        }
+      }
+
+      if (!_isSelected)
+      {
+        if (_team == 0)
+        {
+          _color = color(0, 0, 155);
+        } 
+        if (_team == 1)
+        { 
+          _color = color(0, 0, 0);
+        }
+      }
+
+      if (_team == data[0])
+      {
+        _stroke = color(0, 255, 0);
+      } else
+      {
+        _stroke = color(_color);
+      }
     }
   }
 
@@ -83,32 +117,79 @@ class Checker_Blue
   {
     for (int i = 0; i < block.size(); i++)
     {
-      if (_team == 0 && _team == data[0])
+      if (mode == "multiplayer")
       {
-        if (_isSelected)
+        if (_team == 0 && _team == data[0])
         {
-          if (mousePressed)
+          if (_isSelected)
           {
-            if (block.get(i).spaceCollision())
+            if (mousePressed)
             {
-              currSelectedBlock = block.get(i)._ID;
-              if (dist(mouseX, mouseY, _pos.x, _pos.y) < 80
-                && dist(mouseX, mouseY, _pos.x, _pos.y) > 30) 
+              if (block.get(i).spaceCollision())
               {
-                if (block.get(currSelectedBlock)._Color == "RED") 
+                currSelectedBlock = block.get(i)._ID;
+                if (dist(mouseX, mouseY, _pos.x, _pos.y) < 80
+                  && dist(mouseX, mouseY, _pos.x, _pos.y) > 30) 
                 {
-                  if (block.get(currSelectedBlock).isOccupied == false)
+                  if (block.get(currSelectedBlock)._Color == "RED") 
                   {
-                    _pos.x = block.get(currSelectedBlock)._posX + 25;
-                    _pos.y = block.get(currSelectedBlock)._posY + 25;
-                    
-                    movesound.play();
-                    movesound.rewind();
+                    if (block.get(currSelectedBlock).isOccupied == false)
+                    {
+                      _pos.x = block.get(currSelectedBlock)._posX + 25;
+                      _pos.y = block.get(currSelectedBlock)._posY + 25;
 
-                    _isSelected = false;
+                      movesound.play();
+                      movesound.rewind();
 
-                    data[0] = 1;
-                    s.write(data[0] + " " + block.get(currSelectedBlock)._ID + " " + _ID + "\n");
+                      _isSelected = false;
+
+                      data[0] = 1;
+                      s.write(data[0] + " " + block.get(currSelectedBlock)._ID + " " + 
+                        _ID + " " + screen + "\n");
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+
+      if (mode == "one device")
+      {
+        if (_team == data[0])
+        {
+          if (_isSelected)
+          {
+            if (mousePressed)
+            {
+              if (block.get(i).spaceCollision())
+              {
+                currSelectedBlock = block.get(i)._ID;
+                if (dist(mouseX, mouseY, _pos.x, _pos.y) < 80
+                  && dist(mouseX, mouseY, _pos.x, _pos.y) > 30) 
+                {
+                  if (block.get(currSelectedBlock)._Color == "RED") 
+                  {
+                    if (block.get(currSelectedBlock).isOccupied == false)
+                    {
+                      _pos.x = block.get(currSelectedBlock)._posX + 25;
+                      _pos.y = block.get(currSelectedBlock)._posY + 25;
+
+                      movesound.play();
+                      movesound.rewind();
+
+                      _isSelected = false;
+
+                      if (data[0] == 0)
+                      {
+                        data[0] = 1;
+                      } else 
+                      {
+                        data[0] = 0;
+                      }
+                    }
                   }
                 }
               }
