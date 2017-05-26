@@ -3,9 +3,12 @@ boolean checkerpiece = false;
 int selectedPieces = 0;
 boolean hit;
 boolean update = false;
+boolean isAvaliable;
 
 int currSelected;
+
 int currSelectedBlock;
+int prevSelectedBlock;
 int ID;
 int BlockID;
 int run = 0;
@@ -82,11 +85,20 @@ void setup()
     { 
       if ((x+y) % 20 ==0) 
       {
-        block.add(new Square(x, y, color(255, 0, 0), size, BlockID, "RED"));
+        if (BlockID == 4 || BlockID == 12 || BlockID == 22 || BlockID == 30 ||
+          BlockID == 40 || BlockID == 48 || BlockID == 58 || BlockID == 66)
+        {
+          isAvaliable = true;
+        } else
+        {
+          isAvaliable = false;
+        }
+        block.add(new Square(x, y, color(255, 0, 0), size, BlockID, "RED", isAvaliable));
         BlockID += 1;
       } else
       {
-        block.add(new Square(x, y, color(0, 0, 0), size, BlockID, "BLACK"));
+        isAvaliable = true;
+        block.add(new Square(x, y, color(0, 0, 0), size, BlockID, "BLACK", isAvaliable));
         BlockID += 1;
       }
     }
@@ -110,15 +122,20 @@ void setup()
   InfoBar = new InfoBar();
 }
 
+
+
+
+
 void draw() 
 {
   background(255, 0, 0);
 
   noStroke();
 
+  music.play();
+
   if (screen == 0 || screen == 4)
   {
-    music.play();
     fill (0, 0, 200);
     textSize(20);
     text("The Game Of...", 50, 60);
@@ -159,6 +176,7 @@ void draw()
     }
   }
 
+
   if (screen == 1 || screen == 2)
   {
 
@@ -166,7 +184,6 @@ void draw()
     {
       block.get(i).Draw();
     }
-
 
     for (int i = 0; i<checker.size(); i++)
     {
@@ -185,6 +202,7 @@ void draw()
         checker.get(i).select();
       }
 
+
       checker.get(i).Move();
     }
 
@@ -195,7 +213,6 @@ void draw()
   {
     for (int j = 0; j < checker.size(); j++)
     {
-
       if (update)
       {
         s.write(0 + " " + 0 + " " +  
@@ -210,6 +227,8 @@ void draw()
         data = int(split(input, ' ')); // Split values into an array
         checker.get(data[2])._pos.x = block.get(data[1])._posX + 25;
         checker.get(data[2])._pos.y = block.get(data[1])._posY + 25;
+        block.get(data[3]).isAvaliable = true;
+        block.get(data[1]).isAvaliable = false;
       }
     }
   }
@@ -242,7 +261,18 @@ void mouseClicked()
       }
     }
   }
+
+  for (int i = 0; i < block.size(); i++)
+  {
+    if (block.get(i).spaceCollision())
+    {
+      prevSelectedBlock = block.get(i)._ID;
+      println(prevSelectedBlock);
+    }
+  }
 }
+
+
 
 void keyPressed()
 {

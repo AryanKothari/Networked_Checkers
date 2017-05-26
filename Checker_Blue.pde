@@ -94,7 +94,7 @@ class Checker_Blue
               {
                 if (block.get(currSelectedBlock)._Color == "RED") 
                 {
-                  if (block.get(currSelectedBlock).isOccupied == false)
+                  if (block.get(currSelectedBlock).isAvaliable)
                   {
                     _pos.x = block.get(currSelectedBlock)._posX + 25;
                     _pos.y = block.get(currSelectedBlock)._posY + 25;
@@ -103,12 +103,16 @@ class Checker_Blue
                     movesound.rewind();
 
                     _isSelected = false;
+                    block.get(currSelectedBlock).isAvaliable = false;
+                    block.get(prevSelectedBlock).isAvaliable = true;
+
 
                     if (mode == "multiplayer")
                     {
                       data[0] = 1;
-                      s.write(data[0] + " " + block.get(currSelectedBlock)._ID + " " + 
-                        _ID + " " + screen + "\n");
+                      s.write(data[0] + " " + 
+                      block.get(currSelectedBlock)._ID + " " + 
+                        _ID + " " + screen + " " + block.get(prevSelectedBlock) + "\n");
                     }
 
                     if (mode == "one device")
