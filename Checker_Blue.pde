@@ -94,16 +94,23 @@ class Checker_Blue
             if (block.get(i).spaceCollision())
             {
               currSelectedBlock = block.get(i)._ID;
-
-              //              if (dist(mouseX, mouseY, _pos.x, _pos.y) < 180
-              //                && dist(mouseX, mouseY, _pos.x, _pos.y) > 30) 
-              //              {
               if (block.get(currSelectedBlock)._Color == "RED") 
               {
                 if (block.get(currSelectedBlock).isAvaliable)
                 {
                   _pos.x = block.get(currSelectedBlock)._posX + 25;
                   _pos.y = block.get(currSelectedBlock)._posY + 25;
+
+                  distance = dist(block.get(prevSelectedBlock)._posX, 
+                    block.get(prevSelectedBlock)._posY + 50, 
+                    block.get(currSelectedBlock)._posX, 
+                    block.get(currSelectedBlock)._posY + 50);
+
+                  if (distance > 100)
+                  {
+                    activateKill = true;
+                    println(activateKill);
+                  }
 
                   movesound.play();
                   movesound.rewind();
@@ -143,5 +150,6 @@ class Checker_Blue
 
   public void kill()
   {
+    _isActive = false;
   }
 }

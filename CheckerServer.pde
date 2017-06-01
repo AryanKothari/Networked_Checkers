@@ -3,7 +3,9 @@ boolean checkerpiece = false;
 int selectedPieces = 0;
 boolean hit;
 boolean update = false;
+boolean storeValues = true;
 boolean isAvaliable;
+boolean activateKill;
 
 int currSelected;
 
@@ -11,7 +13,9 @@ int currSelectedBlock;
 int prevSelectedBlock;
 int ID;
 int BlockID;
+float prevX, prevY;
 int run = 0;
+float distance;
 
 int BlackCheckers;
 int BlueCheckers;
