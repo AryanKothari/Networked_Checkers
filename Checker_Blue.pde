@@ -9,6 +9,7 @@ class Checker_Blue
 
   boolean _isSelected;
   boolean _turnOver;
+  boolean _isActive;
 
   Checker_Blue(PVector pos, color Color, int ID, int team)
   {
@@ -21,14 +22,18 @@ class Checker_Blue
 
     _isSelected = false;
     _turnOver = true;
+    _isActive = true;
   }
 
   public void Draw()
   {
-    fill(_color);
-    stroke(_stroke);
-    strokeWeight(2);
-    ellipse(_pos.x, _pos.y, 40, 40);
+    if (_isActive)
+    {
+      fill(_color);
+      stroke(_stroke);
+      strokeWeight(2);
+      ellipse(_pos.x, _pos.y, 40, 40);
+    }
   }
 
   public boolean checkerCollision() {
@@ -89,41 +94,41 @@ class Checker_Blue
             if (block.get(i).spaceCollision())
             {
               currSelectedBlock = block.get(i)._ID;
-              if (dist(mouseX, mouseY, _pos.x, _pos.y) < 80
-                && dist(mouseX, mouseY, _pos.x, _pos.y) > 30) 
+
+              //              if (dist(mouseX, mouseY, _pos.x, _pos.y) < 180
+              //                && dist(mouseX, mouseY, _pos.x, _pos.y) > 30) 
+              //              {
+              if (block.get(currSelectedBlock)._Color == "RED") 
               {
-                if (block.get(currSelectedBlock)._Color == "RED") 
+                if (block.get(currSelectedBlock).isAvaliable)
                 {
-                  if (block.get(currSelectedBlock).isAvaliable)
+                  _pos.x = block.get(currSelectedBlock)._posX + 25;
+                  _pos.y = block.get(currSelectedBlock)._posY + 25;
+
+                  movesound.play();
+                  movesound.rewind();
+
+                  _isSelected = false;
+                  block.get(currSelectedBlock).isAvaliable = false;
+                  block.get(prevSelectedBlock).isAvaliable = true;
+
+
+                  if (mode == "multiplayer")
                   {
-                    _pos.x = block.get(currSelectedBlock)._posX + 25;
-                    _pos.y = block.get(currSelectedBlock)._posY + 25;
+                    data[0] = 1;
+                    s.write(data[0] + " " + 
+                      block.get(currSelectedBlock)._ID + " " + 
+                      _ID + " " + screen + " " + block.get(prevSelectedBlock) + "\n");
+                  }
 
-                    movesound.play();
-                    movesound.rewind();
-
-                    _isSelected = false;
-                    block.get(currSelectedBlock).isAvaliable = false;
-                    block.get(prevSelectedBlock).isAvaliable = true;
-
-
-                    if (mode == "multiplayer")
+                  if (mode == "one device")
+                  {
+                    if (data[0] == 0)
                     {
                       data[0] = 1;
-                      s.write(data[0] + " " + 
-                      block.get(currSelectedBlock)._ID + " " + 
-                        _ID + " " + screen + " " + block.get(prevSelectedBlock) + "\n");
-                    }
-
-                    if (mode == "one device")
+                    } else 
                     {
-                      if (data[0] == 0)
-                      {
-                        data[0] = 1;
-                      } else 
-                      {
-                        data[0] = 0;
-                      }
+                      data[0] = 0;
                     }
                   }
                 }

@@ -161,6 +161,7 @@ void draw()
       movesound.rewind();
       update = true;
       screen = 1;
+      s.write(0 + " " + 0 + " " +  0 + " " + screen + "\n");
       mode = "multiplayer";
     }
 
@@ -171,7 +172,7 @@ void draw()
       movesound.rewind();
 
       screen = 2;
-      update = true;
+      s.write(0 + " " + 0 + " " +  0 + " " + screen + "\n");
       mode = "one device";
     }
   }
@@ -201,8 +202,6 @@ void draw()
       {
         checker.get(i).select();
       }
-
-
       checker.get(i).Move();
     }
 
@@ -213,13 +212,6 @@ void draw()
   {
     for (int j = 0; j < checker.size(); j++)
     {
-      if (update)
-      {
-        s.write(0 + " " + 0 + " " +  
-          0 + " " + screen + "\n");
-        update = false;
-      }
-
       c = s.available();
       if (c != null) {
         input = c.readString();
@@ -267,11 +259,9 @@ void mouseClicked()
     if (block.get(i).spaceCollision())
     {
       prevSelectedBlock = block.get(i)._ID;
-      println(prevSelectedBlock);
     }
   }
 }
-
 
 
 void keyPressed()
